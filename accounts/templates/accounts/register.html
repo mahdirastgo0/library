@@ -1,0 +1,105 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Register</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Reference app-specific static CSS -->
+    <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+    <style>
+        .field-icon {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+<body class="img js-fullheight" style="background-image: url('{% static 'accounts/images/bg.jpg' %}');">
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section">Welcome to our website</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="login-wrap p-0">
+                    <h3 class="mb-4 text-center">Don't Have an account?</h3>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <form action="{% url 'accounts:register' %}" method="POST" class="signin-form">
+                        {% csrf_token %}
+                        {% if errors %}
+                            {% for field, error in errors.items %}
+                                <p class="text text-danger bg-light rounded mb-2">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                                   required>
+                        </div>
+                        <div class="form-group position-relative">
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Email"
+                                   required>
+                        </div>
+                        <div class="form-group position-relative">
+                            <input type="password" name="password1" id="password1" class="form-control"
+                                   placeholder="Password" required>
+                            <span class="fa fa-fw fa-eye field-icon toggle-password"
+                                  onclick="togglePassword('password1')"></span>
+                        </div>
+                        <div class="form-group position-relative">
+                            <input type="password" name="password2" id="password2" class="form-control"
+                                   placeholder="Confirm Password" required>
+                            <span class="fa fa-fw fa-eye field-icon toggle-password"
+                                  onclick="togglePassword('password2')"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="form-control btn btn-primary submit px-3">Sign Up</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<!-- Reference app-specific static JS -->
+<script src="{% static 'accounts/js/jquery.min.js' %}"></script>
+<script src="{% static 'accounts/js/popper.js' %}"></script>
+<script src="{% static 'accounts/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'accounts/js/main.js' %}"></script>
+
+<script>
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        const icon = field.nextElementSibling;
+
+        if (field.type === "password") {
+            field.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            field.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+</script>
+
+</body>
+</html>
