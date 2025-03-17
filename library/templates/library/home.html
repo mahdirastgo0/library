@@ -1,0 +1,434 @@
+{% load static %}
+
+{% include 'header_refrences.html' %}
+
+
+<body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
+
+<div id="header-wrap">
+
+    <div class="top-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="social-links">
+                        <ul>
+                            <li>
+                                <a href="#"><i class="icon icon-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon icon-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon icon-youtube-play"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon icon-behance-square"></i></a>
+                            </li>
+                        </ul>
+                    </div><!--social-links-->
+                </div>
+                <div class="col-md-6">
+                    <div class="right-element">
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'accounts:profile' email=user.email %}" class="user-account for-buy"><i
+                                    class="icon icon-user"></i><span>Profile</span></a>
+                            <a href="{% url 'accounts:logout' %}" class="user-account for-buy"><i
+                                    class="icon icon-user"></i><span>Log out</span></a>
+                        {% else %}
+                            <a href="{% url 'accounts:register' %}" class="user-account for-buy"><i
+                                    class="icon icon-user"></i><span>Register</span></a>
+                            <a href="{% url 'accounts:login' %}" class="user-account for-buy"><i
+                                    class="icon icon-user"></i><span>Login</span></a>
+                        {% endif %}
+                        <div class="action-menu">
+
+                            <div class="search-bar">
+                                <a href="#" class="search-button search-toggle" data-selector="#header-wrap">
+                                    <i class="icon icon-search"></i>
+                                </a>
+                                <form role="search" method="get" class="search-box">
+                                    <input class="search-field text search-input" placeholder="Search"
+                                           type="search">
+                                </form>
+                            </div>
+                        </div>
+
+                    </div><!--top-right-->
+                </div>
+
+            </div>
+        </div>
+    </div><!--top-content-->
+
+    <header id="header">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div class="main-logo">
+                        <a href="index.html"><img src="{% static 'images/main-logo.png' %}" alt="logo"></a>
+                    </div>
+
+                </div>
+
+                <div class="col-md-10">
+
+                    <nav id="navbar">
+                        <div class="main-menu stellarnav">
+                            <ul class="menu-list">
+                                <li class="menu-item active"><a href="#home">Home</a></li>
+                                <li class="menu-item has-sub">
+                                    <a href="#pages" class="nav-link">Pages</a>
+
+                                    <ul>
+                                        <li class="active"><a href="index.html">Home</a></li>
+                                        <li><a href="index.html">About</a></li>
+                                        <li><a href="index.html">Styles</a></li>
+                                        <li><a href="index.html">Blog</a></li>
+                                        <li><a href="index.html">Post Single</a></li>
+                                        <li><a href="index.html">Our Store</a></li>
+                                        <li><a href="index.html">Product Single</a></li>
+                                        <li><a href="index.html">Contact</a></li>
+                                        <li><a href="index.html">Thank You</a></li>
+                                    </ul>
+
+                                </li>
+                                <li class="menu-item"><a href="#featured-books" class="nav-link">Featured</a></li>
+                                <li class="menu-item"><a href="#popular-books" class="nav-link">Popular</a></li>
+                                <li class="menu-item"><a href="#special-offer" class="nav-link">Offer</a></li>
+                                <li class="menu-item"><a href="#latest-blog" class="nav-link">Articles</a></li>
+                            </ul>
+
+                            <div class="hamburger">
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+
+                        </div>
+                    </nav>
+
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+</div><!--header-wrap-->
+
+<section id="billboard">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <button class="prev slick-arrow">
+                    <i class="icon icon-arrow-left"></i>
+                </button>
+
+                <div class="main-slider pattern-overlay">
+                    {% for book in books %}
+                        <div class="slider-item">
+                            <div class="banner-content">
+                                <h2 class="banner-title">{{ book.title }}</h2>
+                                <p>{{ book.description }}</p>
+                            </div><!--banner-content-->
+
+                            {% if book.image %}
+                                <img src="{{ book.image.url }}" alt="{{ book.title }}" class="banner-image">
+                            {% else %}
+                                <img src="{% static 'images/../../../media/books/../../../static/images/blank-profile.jpg' %}"
+                                     alt="No image available"
+                                     class="banner-image">
+                            {% endif %}
+
+                        </div><!--slider-item-->
+                    {% endfor %}
+
+
+                </div><!--slider-->
+
+                <button class="next slick-arrow">
+                    <i class="icon icon-arrow-right"></i>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="featured-books" class="py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>Some quality items</span>
+                    </div>
+                    <h2 class="section-title">Featured Books</h2>
+                </div>
+
+                <div class="product-list" data-aos="fade-up">
+                    <div class="row">
+                        {% for book in featured_books %}
+                            <div class="col-md-3">
+                                <div class="product-item">
+                                    <figure class="product-style">
+                                        <img src="{{ book.image.url }}" alt="{{ book.image }}" class="product-item">
+                                        <button type="button" class="add-to-cart" data-product-tile="add-to-cart">
+                                            Add to Cart
+                                        </button>
+                                    </figure>
+                                    <figcaption>
+                                        <h3>{{ book.title }}</h3>
+                                        <span>{{ book.author }}</span>
+                                        {% if book.discounted_price and book.discounted_price < book.price %}
+                                            <span class="prev-price">${{ book.price }}</span>
+                                            ${{ book.discounted_price }}
+                                            <span class="discount-badge">-{{ book.discount_percentage }}%</span>
+                                        {% else %}
+                                            ${{ book.price }}
+                                        {% endif %}
+                                    </figcaption>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div><!-- row -->
+                </div><!-- product-list -->
+
+
+            </div><!--inner-content-->
+        </div>
+    </div>
+</section>
+
+<section id="best-selling" class="leaf-pattern-overlay">
+    <div class="corner-pattern-overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6">
+                        {% for book in best_sellers %}
+                            {% if book.image %}
+                                <figure class="products-thumb">
+                                    <img src="{{ book.image.url }}" alt="{{ book.title }}" class="book-image">
+                                </figure>
+                            {% else %}
+                                <figure class="products-thumb">
+                                    <img src="{% static 'images/blank-profile.jpg' %}" alt="No image"
+                                         class="book-image">
+                                </figure>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="product-entry">
+                            <h2 class="section-title divider"> Top selling Book</h2>
+
+                            <div class="products-content">
+                                {% for book in best_sellers %}
+                                    <div class="book-item">
+                                    <h3>{{ book.title }}</h3>
+                                    <p>{{ book.author.name }}</p>
+                                    {% if book.discounted_price and book.discounted_price < book.price %}
+                                        <span class="prev-price">${{ book.price }}</span>
+                                        ${{ book.discounted_price }}
+                                        <span class="discount-badge">-{{ book.discount_percentage }}%</span>
+                                    {% else %}
+                                        ${{ book.price }}
+                                    {% endif %}
+                                    <p>{{ book.status }}</p>
+                                {% empty %}
+                                    <p>No Books to be Shown</p>
+                                {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- / row -->
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="popular-books" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>Some quality items</span>
+                    </div>
+                    <h2 class="section-title">Popular Books</h2>
+                </div>
+
+                <!-- Genre Tabs -->
+                <ul class="tabs">
+                    <li data-tab-target="#all-genre" class="tab {% if not selected_genre %}active{% endif %}">All
+                        Genre
+                    </li>
+                    {% for genre in genres %}
+                        <li data-tab-target="#{{ genre.name|slugify }}"
+                            class="tab {% if selected_genre == genre.name %}active{% endif %}">
+                            {{ genre.name }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <form method="get" action="">
+                        <!-- All Genre Tab -->
+                        <div id="all-genre" data-tab-content
+                             class="tab-content-section {% if not selected_genre %}active{% endif %}">
+                            <div class="row">
+                                {% for book in books %}
+                                    <div class="col-md-3">
+                                        <div class="product-item">
+                                            <figure class="product-style">
+                                                <img src="{{ book.image.url }}" alt="{{ book.title }}"
+                                                     class="product-item">
+                                                <button type="button" class="add-to-cart"
+                                                        data-product-tile="add-to-cart">
+                                                    Add to Cart
+                                                </button>
+                                            </figure>
+                                            <figcaption>
+                                                <h3>{{ book.title }}</h3>
+                                                <span>{{ book.author }}</span>
+                                                {% if book.discounted_price and book.discounted_price < book.price %}
+                                                    <span class="prev-price">${{ book.price }}</span>
+                                                    ${{ book.discounted_price }}
+                                                    <span class="discount-badge">-{{ book.discount_percentage }}%</span>
+                                                {% else %}
+                                                    ${{ book.price }}
+                                                {% endif %}
+                                            </figcaption>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Genre Tabs Content (Dynamic) -->
+                        {% for genre in genres %}
+                            <div id="{{ genre.name|slugify }}" data-tab-content
+                                 class="tab-content-section {% if selected_genre == genre.name %}active{% endif %}">
+                                <div class="row">
+                                    {% for book in books %}
+                                        {% if book.genre.name == genre.name %}
+                                            <div class="col-md-3">
+                                                <div class="product-item">
+                                                    <figure class="product-style">
+                                                        <img src="{{ book.image.url }}" alt="{{ book.title }}"
+                                                             class="product-item">
+                                                        <button type="button" class="add-to-cart"
+                                                                data-product-tile="add-to-cart">
+                                                            Add to Cart
+                                                        </button>
+                                                    </figure>
+                                                    <figcaption>
+                                                        <h3>{{ book.title }}</h3>
+                                                        <span>{{ book.author }}</span>
+                                                        {% if book.discounted_price and book.discounted_price < book.price %}
+                                                            <span class="prev-price">${{ book.price }}</span>
+                                                            ${{ book.discounted_price }}
+                                                            <span class="discount-badge">-{{ book.discount_percentage }}%</span>
+                                                        {% else %}
+                                                            ${{ book.price }}
+                                                        {% endif %}
+                                                    </figcaption>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </form>
+                </div> <!-- End tab-content -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="quotation" class="align-center pb-5 mb-5">
+    <div class="inner-content">
+        <h2 class="section-title divider">Quote of the day</h2>
+        <blockquote data-aos="fade-up">
+            <q>“{{ random_quote.qoute_of_day }}”</q>
+            <div class="author-name">{{ random_quote.qoute_author }}</div>
+        </blockquote>
+    </div>
+</section>
+
+<section id="special-offer" class="bookshelf pb-5 mb-5">
+    <div class="section-header align-center">
+        <div class="title">
+            <span>Grab your opportunity</span>
+        </div>
+        <h2 class="section-title">Books with offer</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="inner-content">
+                <div class="product-list" data-aos="fade-up">
+                    <div class="grid product-grid">
+                        {% for book in books %}
+                            <div class="product-item">
+                                <figure class="product-style">
+                                    <img src="{{ book.image.url }}" alt="{{ book.title }}" class="product-item">
+                                    <button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to Cart</button>
+                                </figure>
+                                <figcaption>
+                                    <h3>{{ book.title }}</h3>
+                                    <span>{{ book.author }}</span>
+                                    <div class="item-price">
+                                        {% if book.discounted_price and book.discounted_price < book.price %}
+                                            <span class="prev-price">${{ book.price }}</span>
+                                            ${{ book.discounted_price }}
+                                            <span class="discount-badge">-{{ book.discount_percentage }}%</span>
+                                        {% else %}
+                                            ${{ book.price }}
+                                        {% endif %}
+                                    </div>
+                                </figcaption>
+                            </div>
+                        {% endfor %}
+                    </div><!--grid-->
+                </div>
+            </div><!--inner-content-->
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<!-- jQuery -->
+{% include 'footer_refrences.html' %}
+
+</body>
+
+</html>
+
+
+
+
+
+
+
