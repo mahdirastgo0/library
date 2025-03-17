@@ -1,0 +1,76 @@
+/* CSS for product items */
+.product-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+.product-style {
+    width: 100%;
+    height: 300px; /* Set a fixed height for the image container */
+    overflow: hidden; /* Ensure images don't overflow */
+    position: relative;
+}
+
+.product-style img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure images fill the container while maintaining aspect ratio */
+    object-position: center; /* Center the image within the container */
+}
+
+/* CSS for text and buttons */
+figcaption {
+    margin-top: 10px; /* Adjust as needed */
+}
+
+figcaption h3 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+figcaption span {
+    font-size: 1rem;
+    color: #666;
+}
+
+.item-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.prev-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 5px;
+}
+
+.discount-badge {
+    background-color: #ff4c4c;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    margin-left: 5px;
+}
+
+.add-to-cart {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-style:hover .add-to-cart {
+    opacity: 1;
+}
