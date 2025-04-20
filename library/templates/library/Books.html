@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>لیست کتاب‌ها</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/books.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>کتاب‌ها</h1>
+
+    <form method="get" class="filters-row" dir="rtl">
+        <div class="filter-group">
+            <div class="custom-select">
+                <select name="genre" class="filter-select">
+                    <option value="">-- ژانر --</option>
+                    {% for g in genres %}
+                        <option value="{{ g.genre_id }}"
+                                {% if request.GET.genre == g.genre_id|stringformat:"s" %}selected{% endif %}>{{ g.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="custom-select">
+                <select name="author" class="filter-select">
+                    <option value="">-- نویسنده --</option>
+                    {% for a in authors %}
+                        <option value="{{ a.author_id }}"
+                                {% if request.GET.author == a.author_id|stringformat:"s" %}selected{% endif %}>{{ a.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="custom-select">
+                <select name="year" class="filter-select">
+                    <option value="">-- سال انتشار --</option>
+                    {% for y in years %}
+                        <option value="{{ y }}"
+                                {% if request.GET.year == y|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="custom-select">
+                <select name="status" class="filter-select">
+                    <option value="">-- وضعیت --</option>
+                    {% for s in statuses %}
+                        <option value="{{ s }}" {% if request.GET.status == s %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="custom-select">
+                <select name="popular" class="filter-select">
+                    <option value="">-- محبوبیت --</option>
+                    {% for p in popular %}
+                        <option value="{{ p }}" {% if request.GET.popular == p %}selected{% endif %}>{{ p }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button class="search-button">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                <span class="search-text">جستجو</span>
+            </button>
+        </div>
+    </form>
+
+
+    <div class="book-list">
+        {% for book in page_obj %}
+            <div class="book-item">
+                <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                <div class="book-info">
+                    <h2 class="book-title">{{ book.title }}</h2>
+                    <p><strong>نویسنده:</strong> {{ book.author }}</p>
+                    <p><strong>ژانر:</strong> {{ book.genre }}</p>
+                    <p><strong>سال انتشار:</strong> {{ book.year }}</p>
+                    <p><strong>وضعیت:</strong> {{ book.status }}</p>
+                    <p><strong>محبوبیت:</strong> {{ book.featured }}</p>
+
+                    {% if book.discounted_price %}
+                        <p class="old-price">قیمت اصلی: <span>{{ book.price }} تومان</span></p>
+                        <p class="discounted-price">قیمت با تخفیف: <span>{{ book.discounted_price }} تومان</span></p>
+                    {% else %}
+                        <p class="normal-price">قیمت: <span>{{ book.price }} تومان</span></p>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>هیچ کتابی مطابق با جستجو یافت نشد.</p>
+        {% endfor %}
+    </div>
+
+
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?
+
+
+
+
+
+
+
+
+
+
+
+                    {% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}">قبلی</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="current">{{ num }}</span>
+            {% else %}
+                <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.next_page_number }}">بعدی</a>
+        {% endif %}
+        <a class="home-button-fixed" href="{% url "library:home" %}">home</a>
+    </div>
+</div>
+</body>
+</html>

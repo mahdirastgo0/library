@@ -1,0 +1,339 @@
+body {
+    font-family: Vazir, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.book-item {
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.book-item:hover {
+    transform: scale(1.02);
+}
+
+.book-item img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.book-info {
+    padding: 10px;
+}
+
+.book-info h2 {
+    font-size: 18px;
+    margin: 0 0 5px;
+}
+
+.book-info p {
+    font-size: 14px;
+    color: #555;
+    margin: 0 0 5px;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination a, .pagination span {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    border-radius: 6px;
+    text-decoration: none;
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.pagination .current {
+    background-color: #2196F3;
+    color: white;
+}
+
+.search-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-family: 'Iran Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    direction: rtl;
+}
+
+.search-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #a777e3, #6e8efb);
+}
+
+.search-button:active {
+    transform: translateY(1px);
+}
+
+.search-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.search-button:hover::before {
+    opacity: 1;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    fill: currentColor;
+    transition: transform 0.3s ease;
+}
+
+.search-button:hover .search-icon {
+    transform: scale(1.2);
+}
+
+.search-text {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.search-button:hover .search-text {
+    letter-spacing: 1px;
+}
+
+/* افکت پالس هنگام کلیک */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.search-button:focus {
+    animation: pulse 0.5s ease;
+    outline: none;
+}
+
+/* نسخه موبایل */
+@media (max-width: 768px) {
+    .search-button {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+
+    .search-icon {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* استایل پایه برای فیلترها */
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.filters-row select,
+.filters-row button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  min-width: 120px;
+  transition: 0.3s;
+}
+
+.filters-row select:focus,
+.filters-row button:hover {
+  border-color: #888;
+}
+
+.filters-row button {
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+
+.filters-row button:hover {
+  background: linear-gradient(135deg, #5a75e5, #926bd1);
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.custom-select:hover .select-arrow {
+    border-top-color: #6e8efb;
+}
+
+
+/* استایل برای حالت موبایل */
+@media (max-width: 768px) {
+    .filter-group {
+        font-size: 12px;
+        padding: 8px 30px 8px 10px;
+    }
+
+    .custom-select {
+        min-width: 140px;
+        max-width: 180px;
+        flex: 1 1 auto;
+    }
+
+    .filter-select {
+        padding: 8px 35px 8px 12px; /* قبلاً 12px بود */
+        font-size: 13px;
+    }
+}
+
+/* انیمیشن برای تغییر فیلترها */
+@keyframes filterChange {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.filter-select:focus {
+    animation: filterChange 0.2s ease;
+}
+
+.home-button-fixed {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.home-button-fixed:hover {
+    background: linear-gradient(135deg, #5a75e5, #926bd1);
+    transform: translateY(-2px);
+}
+
+.book-info {
+    padding: 12px;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    direction: rtl;
+}
+
+.book-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.book-info p {
+    font-size: 14px;
+    margin: 4px 0;
+    color: #444;
+    line-height: 1.6;
+}
+
+.book-info p strong {
+    color: #555;
+    font-weight: 600;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #c0392b;
+    font-size: 13px;
+}
+
+.old-price span {
+    color: #c0392b;
+    font-weight: normal;
+}
+
+.discounted-price {
+    color: #27ae60;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.discounted-price span {
+    font-weight: bold;
+}
+
+.normal-price {
+    font-weight: bold;
+    color: #333;
+}
+
+
