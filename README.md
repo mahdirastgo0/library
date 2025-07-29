@@ -20,10 +20,10 @@
 1. پروژه را کلون کنید:
    ```bash
    git clone https://github.com/mahdirastgo0/library.git
-  cd library
-  pip install -r requirements.txt
-  python manage.py migrate
-  python manage.py runserver
+   cd library
+   pip install -r requirements.txt
+   python manage.py migrate
+   python manage.py runserver
 
   این پروژه دارای صفحه لاگین و ثبت نام است که با ایمیل وریفای میشود
   و نیازه که برای دسترسی به اضافه کردن اطلاعت وارد پنل ادمین بشید و نحوه اضافه کردن ادمین هم باید این کد را اول وارد کنید
