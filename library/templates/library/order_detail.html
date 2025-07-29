@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% include 'header.html' %}
+
+<div class="order-detail">
+    <h2>Order Details</h2>
+    <p>Order ID: {{ order.id }}</p>
+    <p>Total Price: ${{ order.total_price }}</p>
+    <p>Status: {% if order.is_paid %}Paid{% else %}Pending{% endif %}</p>
+    <h3>Items:</h3>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.quantity }} x {{ item.product.title }} - ${{ item.price }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% include 'header_refrences.html' %}
+{% include 'footer_refrences.html' %}

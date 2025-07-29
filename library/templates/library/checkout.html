@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load static %}
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    {% include 'header.html' %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت اطلاعات مشتری</title>
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
 </head>
 <body>
-$END$
+    <div class="container">
+        <h1>ثبت اطلاعات مشتری</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-submit">ثبت اطلاعات</button>
+        </form>
+
+        <div class="back-to-cart">
+            <a href="{% url 'library:cart' %}">&larr; بازگشت به سبد خرید</a>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,10 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load static %}
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    {% include 'header.html' %}
+    {% include 'header_refrences.html' %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پرداخت</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-$END$
+    <div class="container">
+        <h1>جزئیات سفارش</h1>
+
+        <!-- نمایش جزئیات سفارش -->
+        <div class="order-summary">
+            <p><strong>نام مشتری:</strong> {{ Customer.fullname }}</p>
+            <p><strong>آدرس ارسال:</strong> {{ Customer.address }}</p>
+            <p><strong>مجموع قیمت:</strong> {{ order.total_price }} تومان</p>
+        </div>
+
+        <!-- فرم پرداخت -->
+        <form method="post" action="{% url 'library:process_payment' order_id=order.id email=request.user.email %}">
+            {% csrf_token %}
+            <div class="payment-method">
+                <h3>روش پرداخت</h3>
+                <label>
+                    <input type="radio" name="payment_method" value="credit_card" required> کارت اعتباری
+                </label><br>
+                <label>
+                    <input type="radio" name="payment_method" value="paypal" required> PayPal
+                </label>
+            </div>
+        </form>
+
+        <div class="back-to-cart">
+            <a href="{% url 'library:cart' %}">&larr; بازگشت به سبد خرید</a>
+        </div>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

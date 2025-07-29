@@ -1,0 +1,100 @@
+{% load static %}
+<div id="header-wrap">
+
+    <div class="top-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="social-links">
+                        <ul>
+                            <li>
+                                <a href="#"><i class="icon icon-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon icon-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon icon-youtube-play"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon icon-behance-square"></i></a>
+                            </li>
+                        </ul>
+                    </div><!--social-links-->
+                </div>
+                <div class="col-md-6">
+                    <div class="right-element">
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'accounts:profile' email=user.email %}" class="user-account for-buy"><i
+                                    class="icon icon-user"></i><span>Profile</span></a>
+                            <a href="{% url 'library:cart' %}" class="user-account for-buy">
+                                <i class="icon icon-shoping-cart"></i>
+                                <span>Cart</span>
+                            </a>
+                            <a href="{% url 'accounts:logout' %}" class="user-account for-buy"><i
+                                    class="icon icon-user"></i><span>Log out</span></a>
+                        {% else %}
+                            <a href="{% url 'accounts:register' %}" class="user-account for-buy"><i
+                                    class="icon icon-user"></i><span>Register</span></a>
+                            <a href="{% url 'accounts:login' %}" class="user-account for-buy"><i
+                                    class="icon icon-user"></i><span>Login</span></a>
+                        {% endif %}
+                        <div class="action-menu">
+
+                            <div class="search-bar">
+                                <a href="#" class="search-button search-toggle" data-selector="#header-wrap">
+                                    <i class="icon icon-search"></i>
+                                </a>
+                                <form role="search" method="get" class="search-box">
+                                    <input class="search-field text search-input" placeholder="Search"
+                                           type="search">
+                                </form>
+                            </div>
+                        </div>
+                    </div><!--top-right-->
+                </div>
+
+            </div>
+        </div>
+    </div><!--top-content-->
+
+    <header id="header">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div class="main-logo">
+                        <a href="index.html"><img src="{% static 'images/main-logo.png' %}" alt="logo"></a>
+                    </div>
+
+                </div>
+
+                <div class="col-md-10">
+
+                    <nav id="navbar">
+                        <div class="main-menu stellarnav">
+                            <ul class="menu-list">
+                                <li class="menu-item"><a href="{% url 'library:home' %}" class="nav-link">Home</a></li>
+                                <li class="menu-item"><a href="{% url 'library:books' %}" class="nav-link">Our Books</a></li>
+                                <li class="menu-item"><a href="{% url 'library:home' %}#featured-books" class="nav-link">Featured</a></li>
+                                <li class="menu-item"><a href="{% url 'library:home' %}#popular-books" class="nav-link">Popular</a></li>
+                                <li class="menu-item"><a href="{% url 'library:home' %}#special-offer" class="nav-link">Offer</a></li>
+                                <li class="menu-item"><a href="{% url 'library:home' %}#latest-blog" class="nav-link">Articles</a></li>
+                            </ul>
+
+                            <div class="hamburger">
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                                <span class="bar"></span>
+                            </div>
+
+                        </div>
+                    </nav>
+
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+</div><!--header-wrap-->

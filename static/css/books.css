@@ -1,134 +1,171 @@
 body {
-    font-family: Vazir, sans-serif;
-    background-color: #f5f5f5;
+    font-family: 'Vazir', 'Iran Sans', Tahoma, sans-serif;
+    background-color: #f8f9fa;
     margin: 0;
-    padding: 20px;
+    padding: 20px 0 0;
 }
 
 .container {
-    max-width: 1000px;
-    margin: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
     background-color: #fff;
-    padding: 20px;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-weight: 700;
 }
 
+/* Filters Section */
+.filters-row {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-select {
+    position: relative;
+    flex: 1;
+    min-width: 180px;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
+    appearance: none;
+    transition: 0.3s;
+}
+
+.filter-select:focus {
+    border-color: #888;
+    outline: none;
+    animation: filterChange 0.2s ease;
+}
+
+/* Book List */
 .book-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
 }
 
 .book-item {
-    background-color: #fafafa;
-    border: 1px solid #ddd;
-    border-radius: 12px;
+    background: white;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
 }
 
 .book-item:hover {
-    transform: scale(1.02);
+    transform: translateY(-5px);
 }
 
 .book-item img {
     width: 100%;
-    height: 220px;
+    height: 250px;
     object-fit: cover;
+    border-bottom: 1px solid #eee;
 }
 
 .book-info {
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
-
-.book-info h2 {
-    font-size: 18px;
-    margin: 0 0 5px;
+.book-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    text-align: center;
+    font-weight: 700;
 }
 
 .book-info p {
-    font-size: 14px;
+    margin: 4px 0 8px;
+    font-size: 0.9rem;
     color: #555;
-    margin: 0 0 5px;
+    line-height: 1.6;
 }
 
-.pagination {
-    text-align: center;
-    margin-top: 30px;
+.book-info strong {
+    color: #555;
+    font-weight: 600;
 }
 
-.pagination a, .pagination span {
-    display: inline-block;
-    padding: 8px 12px;
-    margin: 0 4px;
-    border-radius: 6px;
-    text-decoration: none;
-    background-color: #e0e0e0;
+.book-info > *:not(:last-child) {
+    margin-bottom: 8px;
+}
+
+/* Price Styles */
+.old-price {
+    text-decoration: line-through;
+    color: #c0392b;
+    font-size: 13px;
+}
+
+.discounted-price {
+    color: #27ae60;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.normal-price {
+    font-weight: bold;
     color: #333;
 }
 
-.pagination .current {
-    background-color: #2196F3;
-    color: white;
-}
-
+/* Buttons */
 .search-button {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 24px;
     background: linear-gradient(135deg, #6e8efb, #a777e3);
-    border: none;
-    border-radius: 50px;
     color: white;
-    font-family: 'Iran Sans', sans-serif;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     direction: rtl;
 }
 
 .search-button:hover {
+    background: linear-gradient(135deg, #a777e3, #6e8efb);
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(135deg, #a777e3, #6e8efb);
-}
-
-.search-button:active {
-    transform: translateY(1px);
-}
-
-.search-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.search-button:hover::before {
-    opacity: 1;
 }
 
 .search-icon {
     width: 20px;
     height: 20px;
-    margin-right: 8px;
     fill: currentColor;
     transition: transform 0.3s ease;
 }
@@ -137,116 +174,102 @@ h1 {
     transform: scale(1.2);
 }
 
-.search-text {
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.search-button:hover .search-text {
-    letter-spacing: 1px;
-}
-
-/* افکت پالس هنگام کلیک */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.search-button:focus {
-    animation: pulse 0.5s ease;
-    outline: none;
-}
-
-/* نسخه موبایل */
-@media (max-width: 768px) {
-    .search-button {
-        padding: 10px 18px;
-        font-size: 14px;
-    }
-
-    .search-icon {
-        width: 16px;
-        height: 16px;
-    }
-}
-
-/* استایل پایه برای فیلترها */
-.filters-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.filters-row select,
-.filters-row button {
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background-color: white;
-  min-width: 120px;
-  transition: 0.3s;
-}
-
-.filters-row select:focus,
-.filters-row button:hover {
-  border-color: #888;
-}
-
-.filters-row button {
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  color: white;
-  cursor: pointer;
-  border: none;
-}
-
-.filters-row button:hover {
-  background: linear-gradient(135deg, #5a75e5, #926bd1);
-}
-
-.filter-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
+.add-to-cart {
+    display: flex !important; /* موقتاً اضافه کنید */
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 
-.custom-select:hover .select-arrow {
-    border-top-color: #6e8efb;
+.add-to-cart, .out-of-stock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.add-to-cart:hover {
+    background-color: #218838;
+}
+
+.add-to-cart:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.out-of-stock {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+/* آیکون‌ها */
+.bi {
+    font-size: 1.1em;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0;
+}
+
+.pagination a, .pagination span {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #333;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    background-color: #f1f1f1;
+}
+
+.pagination .current {
+    background-color: #4e73df;
+    color: white;
+    border-color: #4e73df;
 }
 
 
-/* استایل برای حالت موبایل */
-@media (max-width: 768px) {
-    .filter-group {
-        font-size: 12px;
-        padding: 8px 30px 8px 10px;
-    }
 
-    .custom-select {
-        min-width: 140px;
-        max-width: 180px;
-        flex: 1 1 auto;
-    }
+/* Spinner */
+.spinner-border {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: text-bottom;
+    border: .25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+}
 
-    .filter-select {
-        padding: 8px 35px 8px 12px; /* قبلاً 12px بود */
-        font-size: 13px;
+/* No Results */
+.no-results {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 30px;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Animations */
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg);
     }
 }
 
-/* انیمیشن برای تغییر فیلترها */
 @keyframes filterChange {
     0% {
         transform: translateY(0);
@@ -259,81 +282,48 @@ h1 {
     }
 }
 
-.filter-select:focus {
-    animation: filterChange 0.2s ease;
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
-.home-button-fixed {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
-    color: white;
-    padding: 10px 18px;
-    border-radius: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-    z-index: 1000;
+/* Responsive */
+@media (max-width: 768px) {
+    .search-button {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+
+    .search-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .filter-select {
+        padding: 8px 35px 8px 12px;
+        font-size: 13px;
+    }
+
+    .custom-select {
+        min-width: 140px;
+        max-width: 180px;
+        flex: 1 1 auto;
+    }
+
+    .book-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
 }
 
-.home-button-fixed:hover {
-    background: linear-gradient(135deg, #5a75e5, #926bd1);
-    transform: translateY(-2px);
+.action-container {
+    margin-top: auto;
+    padding-top: 10px;
+    min-height: 40px;
 }
-
-.book-info {
-    padding: 12px;
-    background-color: #fff;
-    border-top: 1px solid #eee;
-    direction: rtl;
-}
-
-.book-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 8px;
-    text-align: center;
-}
-
-.book-info p {
-    font-size: 14px;
-    margin: 4px 0;
-    color: #444;
-    line-height: 1.6;
-}
-
-.book-info p strong {
-    color: #555;
-    font-weight: 600;
-}
-
-.old-price {
-    text-decoration: line-through;
-    color: #c0392b;
-    font-size: 13px;
-}
-
-.old-price span {
-    color: #c0392b;
-    font-weight: normal;
-}
-
-.discounted-price {
-    color: #27ae60;
-    font-weight: bold;
-    font-size: 15px;
-}
-
-.discounted-price span {
-    font-weight: bold;
-}
-
-.normal-price {
-    font-weight: bold;
-    color: #333;
-}
-
-

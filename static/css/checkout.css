@@ -1,0 +1,40 @@
+.checkout-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-summary {
+    margin-bottom: 20px;
+}
+
+.order-summary h3 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.order-summary p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #666;
+}
+
+.checkout-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.checkout-button:hover {
+    background-color: #218838;
+}

@@ -1,39 +1,80 @@
-/* CSS for product items */
+/* Product Item Styles */
 .product-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 20px; /* Adjust as needed */
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .product-style {
     width: 100%;
-    height: 300px; /* Set a fixed height for the image container */
-    overflow: hidden; /* Ensure images don't overflow */
+    height: 300px;
+    overflow: hidden;
     position: relative;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
-.product-style img {
+.product-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensure images fill the container while maintaining aspect ratio */
-    object-position: center; /* Center the image within the container */
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
 }
 
-/* CSS for text and buttons */
+.product-style:hover .product-img {
+    transform: scale(1.05);
+}
+
+/* Add to Cart Button */
+.add-to-cart {
+    position: absolute;
+    bottom: -6%;
+    left: 0;
+    width: 100%;
+    background-color: #d4a017; /* رنگ خردلی */
+    color: white;
+    border: none;
+    padding: 8px 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+    z-index: 2;
+    text-decoration: none;
+    font-size: 14px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-style:hover .add-to-cart {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Product Info */
 figcaption {
-    margin-top: 10px; /* Adjust as needed */
+    width: 100%;
+    padding: 0 10px;
 }
 
 figcaption h3 {
     font-size: 1.2rem;
-    margin: 0;
+    margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 figcaption span {
     font-size: 1rem;
     color: #666;
+    display: block;
+    margin-bottom: 5px;
 }
 
 .item-price {
@@ -57,20 +98,37 @@ figcaption span {
     margin-left: 5px;
 }
 
-.add-to-cart {
+.out-of-stock {
     position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    bottom: 0%;
+    left: 0;
+    width: 100%;
+    background-color: #ccc;
+    color: #333;
+    padding: 17.5px 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    opacity: 1;
+    z-index: 2;
 }
 
-.product-style:hover .add-to-cart {
-    opacity: 1;
+.out-of-stock-best-selling {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ccc;
+    color: #333;
+    padding: 10px 0;
+    font-size: 14px;
+    text-align: center;
+    z-index: 2;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }

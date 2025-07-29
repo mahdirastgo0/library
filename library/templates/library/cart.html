@@ -1,47 +1,129 @@
 {% load static %}
-<div class="card">
+<div class="cart-container">
     <link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}">
-            <div class="row">
-                <div class="col-md-8 cart">
-                    <div class="title">
-                        <div class="row">
-                            <div class="col"><h4><b>Shopping Cart</b></h4></div>
-                            <div class="col align-self-center text-right text-muted">{{ total_items }} items</div>
+    <div class="cart-box">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <span class="item-count">{{ total_items }} items</span>
+        </div>
+        <div class="cart-items">
+            {% for cart_item in cart_items %}
+                <div class="cart-item">
+                    <div class="item-image">
+                        {% if cart_item.product.image %}
+                            <img src="{{ cart_item.product.image.url }}" alt="{{ cart_item.product.title }}">
+                        {% else %}
+                            <img src="{% static 'images/blank-profile.jpg' %}" alt="No Image">
+                        {% endif %}
+                    </div>
+                    <div class="item-details">
+                        <h4>{{ cart_item.product.title }}</h4>
+                        <p class="price">
+                            ${{ cart_item.product.price }}
+                            {% if cart_item.product.discounted_price %}
+                                <span class="discounted">${{ cart_item.product.discounted_price }}</span>
+                            {% endif %}
+                        </p>
+
+                        <!-- Controls for quantity -->
+                        <div class="quantity-controls">
+                            <form class="update-cart-form" method="post" action="{% url 'library:update_cart' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
+                                <input type="hidden" name="action" value="decrease">
+                                <button type="submit" class="update-cart"
+                                        {% if cart_item.quantity <= 1 %}disabled{% endif %}>−
+                                </button>
+                            </form>
+
+                            <span class="quantity-value">{{ cart_item.quantity }}</span>
+
+                            <form class="update-cart-form" method="post" action="{% url 'library:update_cart' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="cart_item_id" value="{{ cart_item.id }}">
+                                <input type="hidden" name="action" value="increase">
+                                <button type="submit" class="update-cart">+</button>
+                            </form>
                         </div>
                     </div>
-                    <div class="row border-top border-bottom">
-                        <div class="row main align-items-center">
-                            {% for product in products %}
-                            <div class="col">
-                                <div class="row">{{ product.name }}</div>
-                            </div>
-                            <div class="col">
-                                <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
-                            </div>
-                            <div class="col">{{ product.price }} <span class="close">&#10005;</span></div>
+
+                    <div class="item-total">
+                        <p>${{ cart_item.total_price }}</p>
+                        <a href="{% url 'library:remove_from_cart' cart_item.id %}" class="remove-item">&#10005;</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="empty-cart">Your cart is empty!</p>
+            {% endfor %}
+        </div>
+        <div class="cart-summary">
+            <div class="summary-header">
+                <h4>Summary</h4>
+            </div>
+            <div class="summary-details">
+                <p class="total-items">{{ total_items }} عدد کالا</p>
+                <p class="subtotal">جمع کل: {{ total_price }} تومان</p>
+                {% if Delivery_methods %}
+                    <form method="post" action="{% url 'library:cart' %}">
+                        {% csrf_token %}
+                        <select name="delivery_method" class="delivery-select">
+                            <option value="" disabled selected>روش ارسال را انتخاب کنید</option>
+                            {% for method in Delivery_methods %}
+                                <option value="{{ method.id }}"
+                                        {% if method.id|stringformat:"s" == selected_delivery_method|stringformat:"s" %}selected{% endif %}>
+                                    {{ method.method }} - {{ method.price }} تومان
+                                </option>
                             {% endfor %}
-                        </div>
-                    </div>
-                    <div class="back-to-shop"><a href="{% url 'library:home' %}">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
-                </div>
-                <div class="col-md-4 summary">
-                    <div><h5><b>Summary</b></h5></div>
-                    <hr>
-                    <div class="row">
-                        <div class="col" style="padding-left:0;">{{ total_items }} items</div>
-                        <br>
-                        <div class="col text-right">&dollar;{{ total_price }} </div>
-                    </div>
-                    <form>
-                        <p>SHIPPING</p>
-                        <select><option class="text-muted">Standard-Delivery- &euro;5.00</option></select>
+                        </select>
+                        <button type="submit" class="update-button">به‌روزرسانی</button>
                     </form>
-                    <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                        <div class="col">TOTAL PRICE</div>
-                        <div class="col text-right">&dollar;{{ total_price }} + Delivery price</div>
-                    </div>
-                    <button class="btn">CHECKOUT</button>
-                </div>
+                {% endif %}
+                <p class="delivery-cost">هزینه ارسال: {{ delivery_cost }} تومان</p>
+                <p class="total-price">مبلغ قابل پرداخت: {{ total_price_with_delivery }} تومان</p>
             </div>
 
+            <form method="post" action="{% url 'library:checkout' %}">
+                {% csrf_token %}
+                <input type="hidden" name="total_price" value="{{ total_price_with_delivery }}">
+                <button type="submit" class="checkout-button">تکمیل سفارش</button>
+            </form>
+            <a class="home-btn" href="{% url 'library:home' %}">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
         </div>
+    </div>
+
+    {% include 'cart_refrecence.html' %}
+</div>
+
+<style>
+    .home-btn {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: linear-gradient(135deg, #6e8efb, #a777e3);
+        color: white;
+        padding: 10px 18px;
+        border-radius: 30px;
+        font-weight: bold;
+        text-decoration: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .home-btn:hover {
+        background: linear-gradient(135deg, #5a75e5, #926bd1);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .home-btn i {
+        font-size: 1.2em;
+    }
+</style>

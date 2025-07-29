@@ -4,8 +4,10 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField, UserCreationFor
 from django.core.exceptions import ValidationError
 from django_recaptcha.fields import ReCaptchaField
 from django_recaptcha.widgets import ReCaptchaV2Checkbox
+from django.contrib.auth import get_user_model
 
 
+User = get_user_model()
 
 
 # class CustomUserCreationForm(UserCreationForm):
@@ -122,7 +124,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', "password", "is_active", "is_admin","status"]
+        fields = ['fullname', 'email','phone','address']
 
 
 class UserloginForm(forms.Form):

@@ -5,117 +5,7 @@
 
 <body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
 
-<div id="header-wrap">
-
-    <div class="top-content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="social-links">
-                        <ul>
-                            <li>
-                                <a href="#"><i class="icon icon-facebook"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="icon icon-twitter"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="icon icon-youtube-play"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="icon icon-behance-square"></i></a>
-                            </li>
-                        </ul>
-                    </div><!--social-links-->
-                </div>
-                <div class="col-md-6">
-                    <div class="right-element">
-                        {% if request.user.is_authenticated %}
-                            <a href="{% url 'accounts:profile' email=user.email %}" class="user-account for-buy"><i
-                                    class="icon icon-user"></i><span>Profile</span></a>
-                            <a href="{% url 'accounts:logout' %}" class="user-account for-buy"><i
-                                    class="icon icon-user"></i><span>Log out</span></a>
-                        {% else %}
-                            <a href="{% url 'accounts:register' %}" class="user-account for-buy"><i
-                                    class="icon icon-user"></i><span>Register</span></a>
-                            <a href="{% url 'accounts:login' %}" class="user-account for-buy"><i
-                                    class="icon icon-user"></i><span>Login</span></a>
-                        {% endif %}
-                        <div class="action-menu">
-
-                            <div class="search-bar">
-                                <a href="#" class="search-button search-toggle" data-selector="#header-wrap">
-                                    <i class="icon icon-search"></i>
-                                </a>
-                                <form role="search" method="get" class="search-box">
-                                    <input class="search-field text search-input" placeholder="Search"
-                                           type="search">
-                                </form>
-                            </div>
-                        </div>
-
-                    </div><!--top-right-->
-                </div>
-
-            </div>
-        </div>
-    </div><!--top-content-->
-
-    <header id="header">
-        <div class="container-fluid">
-            <div class="row">
-
-                <div class="col-md-2">
-                    <div class="main-logo">
-                        <a href="index.html"><img src="{% static 'images/main-logo.png' %}" alt="logo"></a>
-                    </div>
-
-                </div>
-
-                <div class="col-md-10">
-
-                    <nav id="navbar">
-                        <div class="main-menu stellarnav">
-                            <ul class="menu-list">
-                                <li class="menu-item active"><a href="#home">Home</a></li>
-                                <li class="menu-item has-sub">
-                                    <a href="#pages" class="nav-link">Pages</a>
-
-                                    <ul>
-                                        <li class="active"><a href="index.html">Home</a></li>
-                                        <li><a href="index.html">About</a></li>
-                                        <li><a href="index.html">Styles</a></li>
-                                        <li><a href="index.html">Blog</a></li>
-                                        <li><a href="index.html">Post Single</a></li>
-                                        <li><a href="index.html">Our Store</a></li>
-                                        <li><a href="index.html">Product Single</a></li>
-                                        <li><a href="index.html">Contact</a></li>
-                                        <li><a href="index.html">Thank You</a></li>
-                                    </ul>
-
-                                </li>
-                                <li class="menu-item"><a href="#featured-books" class="nav-link">Featured</a></li>
-                                <li class="menu-item"><a href="#popular-books" class="nav-link">Popular</a></li>
-                                <li class="menu-item"><a href="#special-offer" class="nav-link">Offer</a></li>
-                                <li class="menu-item"><a href="#latest-blog" class="nav-link">Articles</a></li>
-                            </ul>
-
-                            <div class="hamburger">
-                                <span class="bar"></span>
-                                <span class="bar"></span>
-                                <span class="bar"></span>
-                            </div>
-
-                        </div>
-                    </nav>
-
-                </div>
-
-            </div>
-        </div>
-    </header>
-
-</div><!--header-wrap-->
+{% include 'header.html' %}
 
 <section id="billboard">
 
@@ -133,13 +23,11 @@
                             <div class="banner-content">
                                 <h2 class="banner-title">{{ book.title }}</h2>
                                 <p>{{ book.description }}</p>
-                            </div><!--banner-content-->
-
+                            </div>
                             {% if book.image %}
                                 <img src="{{ book.image.url }}" alt="{{ book.title }}" class="banner-image">
                             {% else %}
-                                <img src="{% static 'images/../../../media/books/../../../static/images/blank-profile.jpg' %}"
-                                     alt="No image available"
+                                <img src="{% static 'images/blank-profile.jpg' %}" alt="No image available"
                                      class="banner-image">
                             {% endif %}
 
@@ -158,7 +46,6 @@
     </div>
 
 </section>
-
 
 
 <section id="featured-books" class="py-5 my-5">
@@ -180,13 +67,26 @@
                                 <div class="product-item">
                                     <figure class="product-style">
                                         <img src="{{ book.image.url }}" alt="{{ book.image }}" class="product-item">
-                                        <button type="button" class="add-to-cart" data-product-tile="add-to-cart">
-                                            Add to Cart
-                                        </button>
+                                        <div class="action-buttons">
+                                            {% if book.status != 'sold' %}
+                                                <button class="add-to-cart"
+                                                        data-book-id="{{ book.book_id }}"
+                                                        data-csrf="{{ csrf_token }}">
+                                                    <i class="bi bi-cart-plus"></i> افزودن به سبد
+                                                </button>
+                                            {% else %}
+                                                <div class="out-of-stock"
+                                                     style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+                                                    <i class="bi bi-x-circle"></i>
+                                                    <span>موجود نیست</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
                                     </figure>
                                     <figcaption>
                                         <h3>{{ book.title }}</h3>
                                         <span>{{ book.author }}</span>
+                                        <br>
                                         {% if book.discounted_price and book.discounted_price < book.price %}
                                             <span class="prev-price">${{ book.price }}</span>
                                             ${{ book.discounted_price }}
@@ -216,9 +116,23 @@
                     <div class="col-md-6">
                         {% for book in best_sellers %}
                             {% if book.image %}
-                                <figure class="products-thumb">
-                                    <img src="{{ book.image.url }}" alt="{{ book.title }}" class="book-image">
-                                </figure>
+                                <div class="product-style">
+                                    <img src="{{ book.image.url }}" alt="{{ book.title }}" class="product-image">
+
+                                    {% if book.status == 'sold' %}
+                                        <div class="out-of-stock-best-selling">
+                                            <i class="bi bi-x-circle"></i>
+                                            <span>موجود نیست</span>
+                                        </div>
+                                    {% else %}
+                                        <button class="add-to-cart"
+                                                data-book-id="{{ book.book_id }}"
+                                                data-csrf="{{ csrf_token }}"
+                                                data-url="{% url 'library:add_to_cart' 0 %}">
+                                            <i class="bi bi-cart-plus"></i> افزودن به سبد
+                                        </button>
+                                    {% endif %}
+                                </div>
                             {% else %}
                                 <figure class="products-thumb">
                                     <img src="{% static 'images/blank-profile.jpg' %}" alt="No image"
@@ -298,16 +212,34 @@
                                     <div class="col-md-3">
                                         <div class="product-item">
                                             <figure class="product-style">
-                                                <img src="{{ book.image.url }}" alt="{{ book.title }}"
-                                                     class="product-item">
-                                                <button type="button" class="add-to-cart"
-                                                        data-product-tile="add-to-cart">
-                                                    Add to Cart
-                                                </button>
+                                                {% if book.image %}
+                                                    <img src="{{ book.image.url }}" alt="{{ book.title }}"
+                                                         class="product-item">
+                                                {% else %}
+                                                    <img src="{% static 'images/default-book.png' %}"
+                                                         alt="No image available" class="product-item">
+                                                {% endif %}
+                                                <div class="action-buttons">
+                                                    {% if book.status != 'sold' %}
+                                                        <button class="add-to-cart"
+                                                                data-book-id="{{ book.book_id }}"
+                                                                data-csrf="{{ csrf_token }}"
+                                                                data-url="{% url 'library:add_to_cart' 0 %}">
+                                                            <i class="bi bi-cart-plus"></i> افزودن به سبد
+                                                        </button>
+                                                    {% else %}
+                                                        <div class="out-of-stock"
+                                                             style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+                                                            <i class="bi bi-x-circle"></i>
+                                                            <span>موجود نیست</span>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
                                             </figure>
                                             <figcaption>
                                                 <h3>{{ book.title }}</h3>
                                                 <span>{{ book.author }}</span>
+                                                <br>
                                                 {% if book.discounted_price and book.discounted_price < book.price %}
                                                     <span class="prev-price">${{ book.price }}</span>
                                                     ${{ book.discounted_price }}
@@ -334,10 +266,22 @@
                                                     <figure class="product-style">
                                                         <img src="{{ book.image.url }}" alt="{{ book.title }}"
                                                              class="product-item">
-                                                        <button type="button" class="add-to-cart"
-                                                                data-product-tile="add-to-cart">
-                                                            Add to Cart
-                                                        </button>
+                                                        <div class="action-buttons">
+                                                            {% if book.status != 'sold' %}
+                                                                <button class="add-to-cart"
+                                                                        data-book-id="{{ book.book_id }}"
+                                                                        data-csrf="{{ csrf_token }}"
+                                                                        data-url="{% url 'library:add_to_cart' 0 %}">
+                                                                    <i class="bi bi-cart-plus"></i> افزودن به سبد
+                                                                </button>
+                                                            {% else %}
+                                                                <div class="out-of-stock"
+                                                                     style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+                                                                    <i class="bi bi-x-circle"></i>
+                                                                    <span>موجود نیست</span>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
                                                     </figure>
                                                     <figcaption>
                                                         <h3>{{ book.title }}</h3>
@@ -391,7 +335,22 @@
                             <div class="product-item">
                                 <figure class="product-style">
                                     <img src="{{ book.image.url }}" alt="{{ book.title }}" class="product-item">
-                                    <button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to Cart</button>
+                                    <div class="action-buttons">
+                                        {% if book.status != 'sold' %}
+                                            <button class="add-to-cart"
+                                                    data-book-id="{{ book.book_id }}"
+                                                    data-csrf="{{ csrf_token }}"
+                                                    data-url="{% url 'library:add_to_cart' 0 %}">
+                                                <i class="bi bi-cart-plus"></i> افزودن به سبد
+                                            </button>
+                                        {% else %}
+                                            <div class="out-of-stock"
+                                                 style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+                                                <i class="bi bi-x-circle"></i>
+                                                <span>موجود نیست</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </figure>
                                 <figcaption>
                                     <h3>{{ book.title }}</h3>
@@ -416,16 +375,12 @@
 </section>
 
 
-
-
-
 <!-- jQuery -->
 {% include 'footer_refrences.html' %}
 
 </body>
 
 </html>
-
 
 
 

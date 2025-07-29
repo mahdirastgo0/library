@@ -1,10 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // تابع کلی برای به‌روزرسانی سبد خرید
+        $('body').on('submit', '.update-cart-form', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const cartItemId = form.find('input[name="cart_item_id"]').val();
+            const action = form.find('input[name="action"]').val();
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function(data) {
+                    if(data.status === 'success') {
+                        // به‌روزرسانی مقدار تعداد
+                        form.closest('.quantity-controls').find('.quantity-value').text(data.new_quantity);
+
+                        // به‌روزرسانی قیمت کل آیتم
+                        form.closest('.cart-item').find('.item-total p').text('$' + data.total_price);
+
+                        // به‌روزرسانی جمع کل سبد خرید
+                        $('.cart-total-price').text('$' + data.total_price_all);
+
+                        // غیرفعال کردن دکمه کاهش اگر مقدار به ۱ رسید
+                        if(data.new_quantity <= 1) {
+                            form.find('button[value="decrease"]').prop('disabled', true);
+                        } else {
+                            form.find('button[value="decrease"]').prop('disabled', false);
+                        }
+                    } else {
+                        alert('خطا: ' + data.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert('خطا در ارتباط با سرور');
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        // مدیریت تغییر روش ارسال
+        $('#delivery_method').change(function() {
+            const selectedOption = $(this).find('option:selected');
+            const deliveryCost = parseFloat(selectedOption.data('price')) || 0;
+            const totalPrice = parseFloat($('#total_price').val());
+            const totalPriceWithDelivery = totalPrice + deliveryCost;
+
+            $('#delivery_cost').text(deliveryCost.toFixed(2));
+            $('#total_price_with_delivery').text(totalPriceWithDelivery.toFixed(2));
+        });
+    });
+
+    // تابع کمکی برای دریافت CSRF Token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>

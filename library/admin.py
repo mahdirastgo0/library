@@ -1,3 +1,8 @@
 from django.contrib import admin
+from accounts.models import CartItem, Delivery
 
-# Register your models here.
+admin.site.register(CartItem)
+admin.site.register(Delivery)
+
+
+

@@ -1,0 +1,14 @@
+<!-- process.html -->
+
+{% block content %}
+<div class="container">
+    <h2>پرداخت سفارش #{{ order.id }}</h2>
+    <p>مبلغ قابل پرداخت: {{ order.total_price }} تومان</p>
+
+    <!-- در اینجا فرم پرداخت یا دکمه انتقال به درگاه را قرار دهید -->
+    <form method="post" action="{% url 'payment:callback' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">انتقال به درگاه پرداخت</button>
+    </form>
+</div>
+{% endblock %}

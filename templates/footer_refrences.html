@@ -6,5 +6,59 @@
 <!-- Your custom JS -->
 <script src="{% static 'js/plugins.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
+<script>
+    function showAlert(message, isSuccess = true) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = isSuccess ? 'alert success' : 'alert error';
+        alertDiv.textContent = message;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => alertDiv.remove(), 3000);
+    }
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/offer.css' %}">
+    async function addToCart(button) {
+        const bookId = button.dataset.bookId;
+        const csrfToken = button.dataset.csrf;
+        let url = button.dataset.url;
+        url = url.replace('0', bookId);
+
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> در حال پردازش...';
+        button.disabled = true;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showAlert(data.message || 'موفق');
+                const cartCountElements = document.querySelectorAll('.cart-count');
+                cartCountElements.forEach(el => el.textContent = data.cart_count);
+            } else {
+                throw new Error(data.error || 'خطا در افزودن به سبد');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showAlert(error.message, false);
+        } finally {
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function () {
+                addToCart(this);
+            });
+        });
+    });
+</script>
+

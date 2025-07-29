@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,20 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(w2w1zoioa^%9q9w#c1+$su1jvr=!n(fim+edh-)t9sp1%lop^'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    'b5ad-2a01-4f8-1c17-e012-00-1.ngrok-free.app',  # Replace with your ngrok URL
-]
+ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://b5ad-2a01-4f8-1c17-e012-00-1.ngrok-free.app',  # Add your ngrok domain here
-]
+CSRF_TRUSTED_ORIGINS = []
 
 
 # Application definition
@@ -58,6 +53,9 @@ INSTALLED_APPS = [
     'django_recaptcha',
     'crispy_forms',
     'tinymce',
+    'payment.apps.PaymentConfig',
+    "django_jalali",
+    'rest_framework',
 
 ]
 
@@ -76,6 +74,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'library_project.urls'
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 TEMPLATES = [
     {
@@ -98,7 +97,6 @@ WSGI_APPLICATION = 'library_project.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -107,9 +105,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -127,9 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -139,8 +131,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 
 
@@ -159,8 +149,7 @@ RECAPTCHA_PRIVATE_KEY = '6Leya-AqAAAAACRFEiwliVr2PXZlAAu8WS2iKtF5'  # Secret Key
 RECAPTCHA_DEFAULT_ACTION = 'generic'
 RECAPTCHA_SCORE_THRESHOLD = 1
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -189,7 +178,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = 'rastgoom23@gmail.com'
 EMAIL_HOST_USER = 'rastgoom23@gmail.com'
-EMAIL_HOST_PASSWORD = 'raatdgpixwfrtvje'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'rastgoom23@gmail.com'
@@ -204,3 +193,78 @@ MESSAGE_TAGS = {
     messages.SUCCESS: 'success',
 }
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+    "dark_mode_theme": "darkly",
+}
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Library Admin",
+    "site_header": "Library",
+    "site_brand": "Library",
+    "site_logo": None,
+    "site_logo_classes": None,
+    "site_icon": None,
+    "welcome_sign": "Welcome to the library",
+    "copyright": "Acme Library Ltd",
+    "search_model": ["accounts.User", "auth.Group"],  # ✅ اینجا auth.User به accounts.User تغییر کرد
+    "user_avatar": None,
+
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["accounts.view_user"]},  # ✅ permission هم اصلاح شد
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"model": "accounts.User"},  # ✅ مدل درست
+        {"app": "library"},  # ✅ چون books نداری، library رو گذاشتم
+    ],
+
+    "usermenu_links": [
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"model": "accounts.User"}  # ✅ درست شد
+    ],
+
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": ["auth", "library", "accounts"],  # ✅ apps موجود
+
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "accounts.user": "fas fa-user",  # ✅ به جای auth.user
+        "auth.Group": "fas fa-users",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+
+    "related_modal_active": False,
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {"accounts.user": "collapsible", "auth.group": "vertical_tabs"},  # ✅
+    "language_chooser": False,
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_RATES': {
+        'checkout': '5/minute',  # حداکثر ۵ سفارش در دقیقه
+    }
+}

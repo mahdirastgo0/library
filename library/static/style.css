@@ -2377,26 +2377,6 @@ footer#footer {
   width: 100%;
 }
 
-.product-style button.add-to-cart {
-  position: absolute;
-  background: #000;
-  color: #fff;
-  width: 100%;
-  margin: 0;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 3;
-  bottom: 300px;
-  bottom: -65px;
-  left: 0;
-  z-index: 9;
-  transition: 0.3s ease-out;
-}
-
-.product-style:hover button.add-to-cart {
-  bottom: 380px;
-  bottom: 0;
-}
 
 .product-item figcaption {
   margin-top: 30px;

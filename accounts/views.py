@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model, authenticate, logout, login as auth_login
 from django.contrib import messages
 from .forms import UserChangeForm
@@ -11,6 +11,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import send_mail
 from .utils import generate_token, verify_token, send_verification_email
+
 def register(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -78,16 +79,20 @@ def user_login(request):
         else:
             user = authenticate(request, username=username_or_email, password=password)
 
-
         if user is not None:
             if user.is_verified:
-                auth_login(request, user)  # Log the user in
-                return redirect("library:home")  # Redirect to home page after successful login
+                auth_login(request, user)
+                return redirect("library:home")
             else:
-                messages.error(request, "Your account is not verified. Please check your email.")
-                return render(request, "accounts/login.html", {'resend_verification': True, 'email': user.email})
+                send_verification_email(user, request)
+
+                messages.error(request, "حساب شما هنوز تأیید نشده است. لطفاً ایمیل خود را بررسی کنید.")
+                return render(request, "accounts/login.html", {
+                    'resend_verification': True,
+                    'email': user.email
+                })
         else:
-            messages.error(request, "Invalid username/email or password")
+            messages.error(request, "ایمیل یا رمز عبور نادرست است.")
             return redirect("accounts:login")
 
     # If the request method is not POST, render the login page
@@ -100,30 +105,27 @@ def custom_logout(request):
     return redirect("library:home")
 
 
-
-
 def profile(request, email):
+    User = get_user_model()  # دریافت مدل User
+
+    # دریافت کاربر یا نمایش صفحه 404
+    user = get_object_or_404(User, email=email)
+
     if request.method == "POST":
-        user = get_object_or_404(User, email=email)
-        form = UserChangeForm(request.POST, request.FILES, instance=user)
+        form = UserChangeForm(request.POST, instance=user)
         if form.is_valid():
-            user_form = form.save()
-            messages.success(request, f'{user_form.username}, Your profile has been updated!')
-            return redirect("profile", email=user_form.email)
+            form.save()
+            messages.success(request, "Your profile has been updated successfully!")
+            return redirect("accounts:profile", email=user.email)
+        else:
+            print(form.errors)  # اضافه کردن این خط برای بررسی خطاها
+            for error in list(form.errors.values()):
+                messages.error(request, error)
 
-        for error in list(form.errors.values()):
-            messages.error(request, error)
-
-    user = get_user_model().objects.filter(email=email).first()
-    if user:
+    else:
         form = UserChangeForm(instance=user)
-        return render(
-            request=request,
-            template_name="accounts/profile.html",
-            context={'user': user, 'form': form}
-        )
 
-    return redirect("accounts/profile.html", user_form.email)
+    return render(request, "accounts/profile.html", {"user": user, "form": form})
 
 
 def best_selling_books(request):
@@ -145,11 +147,8 @@ def verify_token(token, max_age=3600):
 
 
 def verify_email(request, token):
-    print("Entering verify_email view")  # Debugging
-    print(f"Token: {token}")  # Debugging
 
     email = verify_token(token)
-    print(f"Email: {email}")  # Debugging
 
     if email is None:
         messages.error(request, "Invalid or expired verification link.")
@@ -157,7 +156,6 @@ def verify_email(request, token):
 
     try:
         user = User.objects.get(email=email)
-        print(f"User: {user}")  # Debugging
         if user.is_verified:
             messages.warning(request, "Your account is already verified.")
         else:
